@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
+<head>
+  <link href="https://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="generator" content="Hugo 0.92.0" />
+
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Python代码在Python中运行--exec &middot; SpaceBlog</title>
+  <meta name="description" content="" />
+
+  
+  <link type="text/css" rel="stylesheet" href="http://zhuihmk.github.io/css/print.css" media="print">
+  <link type="text/css" rel="stylesheet" href="http://zhuihmk.github.io/css/poole.css">
+  <link type="text/css" rel="stylesheet" href="http://zhuihmk.github.io/css/syntax.css">
+  <link type="text/css" rel="stylesheet" href="http://zhuihmk.github.io/css/hyde.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Abril+Fatface|PT+Sans:400,400i,700">
+
+
+  
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/apple-touch-icon-144-precomposed.png">
+  <link rel="shortcut icon" href="/favicon.png">
+
+  
+  
+</head>
+
+  <body class="theme-base-0d ">
+  <aside class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <a href="http://zhuihmk.github.io/"><h1>SpaceBlog</h1></a>
+      <p class="lead">
+       Everything about me 
+      </p>
+    </div>
+
+    <nav>
+      <ul class="sidebar-nav">
+        <li><a href="http://zhuihmk.github.io/">Home</a> </li>
+        <li><a href="https://github.com/zhuihmk/"> Github </a></li>
+      </ul>
+    </nav>
+
+    <p>&copy; 2022. All rights reserved. </p>
+  </div>
+</aside>
+
+    <main class="content container">
+    <div class="post">
+  <h1>Python代码在Python中运行--exec</h1>
+  <time datetime=2022-01-25T14:37:53&#43;0800 class="post-date">Tue, Jan 25, 2022</time>
+  <h3 id="需求">需求</h3>
+<p>前端传输一端python代码发给后端, 后端执行后返回python代码中的输出, 实现一个类似于jupyter notebook的功能</p>
+<h3 id="构思">构思</h3>
+<ol>
+<li>接收字符串后, 对于字符串进行处理, 使其可以被python识别并处理, 例如: 引号进行转义处理</li>
+<li>调用内部函数执行处理好的字符串</li>
+<li>改变输出流, 获取执行时的字符输出</li>
+<li>返回字符输出</li>
+</ol>
+<h3 id="处理">处理</h3>
+<ol>
+<li>
+<p>字符串不需要进行转义</p>
+</li>
+<li>
+<p>内部函数有两个</p>
+<pre tabindex="0"><code>exec()
+  执行完不返回结果, 可以接受赋值语句
+eval()
+  执行完返回结果, 不可以接受赋值语句
+</code></pre></li>
+<li>
+<p>改变输出流, 使用协程</p>
+<pre tabindex="0"><code> @contextlib.contextmanager
+ def stdoutIO(stdout=None):
+   old = sys.stdout
+   if stdout == None:
+       stdout = StringIO()
+   sys.stdout = stdout
+   yield stdout
+   sys.stdout = old
+</code></pre><p>reference: <a href="https://stackoverflow.com/questions/3906232/python-get-the-print-output-in-an-exec-statement">https://stackoverflow.com/questions/3906232/python-get-the-print-output-in-an-exec-statement</a></p>
+</li>
+<li>
+<p>获取到字符串后, 进行json处理, 因为dict在输出时使用单引号, 但是单引号无法被json识别, 所以需要把输出的字符串中的单引号转换成双引号进行json序列化</p>
+<p>reference: <a href="https://blog.csdn.net/qq_41375609/article/details/100118545">https://blog.csdn.net/qq_41375609/article/details/100118545</a></p>
+</li>
+</ol>
+<h3 id="思考">思考</h3>
+<p>安全的思考: 代码执行的隔离, 作用域的处理, 恶意代码的排查</p>
+<p>reference: <a href="http://c.biancheng.net/view/5683.html">http://c.biancheng.net/view/5683.html</a></p>
+</div>
+
+
+    </main>
+
+    
+      
+    
+  </body>
+</html>

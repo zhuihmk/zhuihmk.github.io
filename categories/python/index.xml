@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>python on SpaceBlog</title>
+    <link>http://zhuihmk.github.io/categories/python/</link>
+    <description>Recent content in python on SpaceBlog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 25 Jan 2022 14:37:53 +0800</lastBuildDate><atom:link href="http://zhuihmk.github.io/categories/python/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Python代码在Python中运行--exec</title>
+      <link>http://zhuihmk.github.io/python_exec/</link>
+      <pubDate>Tue, 25 Jan 2022 14:37:53 +0800</pubDate>
+      
+      <guid>http://zhuihmk.github.io/python_exec/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
